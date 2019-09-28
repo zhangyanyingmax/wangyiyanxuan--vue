@@ -127,6 +127,9 @@
           .tag
             width rem(120)
             height rem(32)
+            line-height rem(32)
+            text-align center
             background-color #CBB693
-            padding 0 rem(10)
+           /* box-sizing border-box
+            white-space nowrap*/
 </style>

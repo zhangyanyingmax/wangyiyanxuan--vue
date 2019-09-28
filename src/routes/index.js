@@ -3,6 +3,7 @@ import CateList from 'pages/cateList/cateList.vue';
 import Topic from 'pages/topic/topic.vue';
 import Cart from 'pages/cart/cart.vue';
 import Profile from 'pages/profile/profile.vue';
+import Search from 'pages/search/search.vue';
 
 
 export default [
@@ -11,5 +12,6 @@ export default [
   {path: "/topic", component: Topic, meta:{showFooter:true}},
   {path: "/cart", component: Cart, meta:{showFooter:true}},
   {path: "/profile", component: Profile},
+  {path: "/search", component: Search},
   {path: "/", redirect: "/home"},
 ]

@@ -1,17 +1,17 @@
 <template>
   <div class="home">
     <div class="top">
-      <header class="header">
-        <img class="logo" src="https://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/indexLogo-a90bdaae6b.png" alt="logo">
-        <div class="search">
-          <img class="searchIcon" src="https://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/search2-553dba3aff.png" alt="">
-          <span class="searchInput">搜索商品, 共23056款好物</span>
-        </div>
-        <button class="btn">登录</button>
-      </header>
+      <HomeHeader>
+        <template slot="left">
+          <img class="logo" src="https://yanxuan-static.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/indexLogo-a90bdaae6b.png" alt="logo">
+        </template>
+        <template slot="right">
+          <button class="btn">登录</button>
+        </template>
+      </HomeHeader>
       <nav class="nav">
         <div class="navUl" ref="navWrapper">
-          <ul class="navList" ref="listWrapper" v-if="isShow">
+          <ul class="navList" ref="listWrapper" v-show="isShow">
             <li>推荐</li>
             <li>居家生活</li>
             <li>服饰鞋包</li>
@@ -22,7 +22,7 @@
             <li>数码家电</li>
             <li>全球特色</li>
           </ul>
-          <div class="mask" v-else>
+          <div class="mask"  v-show="!isShow">
             <div class="maskTop">
               <h3>全部频道</h3>
               <ul class="maskList">
@@ -45,14 +45,18 @@
         </div>
       </nav>
     </div>
-    <div class="contentWrap" ref="contentWrap">
-      <div class="content" ref="content">
-        <HomeSwiper class="swiper"></HomeSwiper>
-        <PolicyDescList class="descList"></PolicyDescList>
-        <div class="contentList">
-          <KingKongList class="kingList"></KingKongList>
-          <NewActivity class="newActivity"></NewActivity>
-          <TagList class="tagList"></TagList>
+    <div class="contentWrap" >
+      <div style="width: 100%;height: 100%" ref="contentWrap">
+        <div class="content" ref="content">
+          <HomeSwiper class="swiper"></HomeSwiper>
+          <PolicyDescList class="descList"></PolicyDescList>
+          <div class="contentList">
+            <KingKongList class="kingList"></KingKongList>
+            <NewActivity class="newActivity"></NewActivity>
+            <TagList class="tagList"></TagList>
+            <CategoryList class="categoryList"></CategoryList>
+            <!--<PopularList></PopularList>-->
+          </div>
         </div>
       </div>
     </div>
@@ -66,6 +70,9 @@
   import KingKongList from 'components/kingKongList/kingKongList.vue';
   import NewActivity from 'components/newActivity/newActivity.vue';
   import TagList from 'components/tagList/tagList.vue';
+  import CategoryList from 'components/categoryList/categoryList.vue';
+  import PopularList from 'components/popularList/popularList.vue';
+  import HomeHeader from 'components/homeHeader/homeHeader.vue';
   export default {
     name: "home",
     data(){
@@ -76,49 +83,47 @@
     },
     methods:{
       initListScroll(){
-        // let width = this.$refs.listWrapper.clientWidth;
-        // this.$refs.listWrapper.style.width = width + "px";
-        // this.$nextTick(() => {
-          if (!this.listScroll){
-            this.listScroll = new BScroll(this.$refs.navWrapper,{
-              startX:0,
-              scrollX:true
-            })
-          }else{
-            this.listScroll.refresh();
-          }
-        // })
+        if (!this.listScroll){
+          this.listScroll = new BScroll(this.$refs.navWrapper,{
+            startX:0,
+            scrollX:true
+          })
+        }else{
+          this.listScroll.refresh();
+        }
       },
       initContentScroll(){
-        // let hight = this.$refs.content.clientHeight;
-        // this.$refs.content.style.hight = hight + "px";
-        this.$nextTick(() => {
-          if (!this.contentScroll){
-            this.contentScroll = new BScroll(this.$refs.contentWrap,{
-              startY:0,
-              scrollY:true
-            })
-          }else{
-            this.contentScroll.refresh();
-          }
-        })
+        if (!this.homeScroll){
+          this.homeScroll = new BScroll(this.$refs.contentWrap,{
+            startY:0,
+            scrollY:true,
+            click:true
+          })
+        }else{
+          this.homeScroll.refresh();
+        }
       },
       showMask(){
         this.isShow = !this.isShow;
         const btn = this.$refs.maskBtn;
-        btn.style.transaction = "all .3s linear";
-        btn.style.transform = "rotate(180deg)";
+        if (this.isShow){
+          btn.style.transform = "rotate(0deg)";
+        } else{
+          btn.style.transform = "rotate(180deg)";
+        }
       }
     },
     components:{
+      HomeHeader,
       HomeSwiper,
       PolicyDescList,
       KingKongList,
       NewActivity,
-      TagList
+      TagList,
+      CategoryList,
+      PopularList
     },
     mounted(){
-      // console.log(1111)
       this.$nextTick(() => {
         this.initListScroll();
       });
@@ -131,11 +136,6 @@
         this.initListScroll();
       });
     },
-    watch(){
-      this.$nextTick(() => {
-        this.initContentScroll();
-      })
-    }
   }
 </script>
 
@@ -146,43 +146,12 @@
   height 100%
   position relative
   .top
-    position absolute
+    position fixed
     top 0
     left 0
     height rem(148)
     background-color #ffffff
     z-index 99
-    .header
-      padding rem(16) rem(30)
-      background-color #ffffff
-      display flex
-      .logo
-        width rem(138)
-        height rem(40)
-        margin-right rem(20)
-        margin-top rem(5)
-      .search
-        width rem(442)
-        height rem(56)
-        background-color #EDEDED
-        display flex
-        justify-content center
-        align-items center
-        .searchIcon
-          width rem(28)
-          height rem(28)
-          margin-right rem(10)
-        .searchInput
-          font-size rem(28)
-      .btn
-        width rem(74)
-        height rem(40)
-        border 1px solid #b4282d
-        border-radius rem(5)
-        font-size rem(24)
-        color #b4282d
-        margin-left rem(16)
-        margin-top rem(5)
     .nav
       width 100%
       height rem(60)
@@ -220,10 +189,9 @@
           width 100%
           height 100%
           background-color rgba(0,0,0,.5)
-          position absolute
-          top 0
+          position fixed
+          top 1.25rem
           left 0
-          /*padding-top rem(15)*/
           z-index 10
           .maskTop
             background-color #ffffff
@@ -270,12 +238,12 @@
         width rem(30)
         height rem(30)
         margin-top rem(15)
+        transition .3s all linear
   .contentWrap
     width 100%
     height 100%
-    position absolute
-    top rem(148)
-    left 0
+    box-sizing border-box
+    padding rem(148) 0 rem(98)
     .content
       .contentList
         background-color #f3f3f3
@@ -286,7 +254,12 @@
           background-color #ffffff
         .tagList
           background-color #ffffff
-          margin-bottom rem(30)
+          margin-bottom rem(20)
+        .categoryList
+          margin-bottom rem(20)
+          background-color #ffffff
+
+
 
 
 </style>

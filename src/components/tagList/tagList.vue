@@ -1,17 +1,22 @@
 <template>
   <div class="tagList">
-    <div class="title">
-      <span class="left">品牌制造商直供</span>
-      <a href="#" class="right">
-        <span class="more">更多</span>
-        <i class="iconfont icon-youjiantou"></i>
-      </a>
-    </div>
+    <ListHeader :title="`品牌制造商直供`">
+      <template>
+        <a href="" class="right" >
+          <span class="more">更多</span>
+          <i class="iconfont icon-youjiantou">
+            <a href=""></a>
+          </i>
+        </a>
+      </template>
+    </ListHeader>
     <ul class="list">
-      <li v-for="item in tagList">
-        <a href="#">
-          <h4>{{item.name}}</h4>
-          <span>{{item.floorPrice}} 元起</span>
+      <li v-for="item in tagList" :style="{backgroundImage:'url(' + item.webIndexVerticalPicUrl + ')'}">
+        <a href="https://m.you.163.com/item/manufacturer?tagId=1080000&page=1&size=100"  >
+         <div class="text">
+           <h4>{{item.name}}</h4>
+           <span>{{item.floorPrice}} 元起</span>
+         </div>
         </a>
       </li>
     </ul>
@@ -20,6 +25,7 @@
 
 <script>
   import axios from 'axios';
+  import ListHeader from 'components/listHeader/listHeader.vue';
   const OK = 0;
   export default {
     name: "tagList",
@@ -28,9 +34,12 @@
         tagList: []
       }
     },
+    components:{
+      ListHeader
+    },
     async created(){
       const res = await axios.get("/tagList");
-      console.log(res);
+      // console.log(res);
       if (res.data.errno === OK){
         this.tagList = res.data.data;
       }
@@ -42,31 +51,35 @@
 @import "../../common/stylus/mixin.styl"
   .tagList
     width 100%
-    .title
-      padding 0 rem(30)
-      box-sizing border-box
-      height rem(100)
-      .left
-        font-size rem(32)
-        color #333333
-        line-height rem(100)
-      .right
-        float right
-        display block
-        line-height rem(100)
-        font-size rem(28)
-        .iconfont
-          font-size rem(28)
-          margin rem(-5) 0 0 rem(8)
-
-
     .list
-      padding 0 rem(26) rem(26) rem(30)
+      width 100%
+      position: relative;
+      overflow: hidden;
+      background: #fff;
+      margin-bottom: .26667rem;
+      padding: 0 .34667rem .34667rem .4rem;
+      box-sizing border-box
       >li
-        width rem(343)
-        height rem(260)
-        margin 0 rem(4) rem(4) 0
-        float left
+        display inline-block
+        position: relative;
+        margin: 0 .05333rem .05333rem 0;
+        width: 4.57333rem;
+        height: 3.46667rem;
+        overflow: hidden;
+        background-color: #eee;
+        border-radius: .05333rem;
+        background-size 100% 100%
+        text-align center
+        box-sizing border-box
+        >a
+          .text
+            padding-top rem(23)
+            >h4
+              font-size rem(28)
+              margin-bottom rem(3)
+            >span
+              font-size rem(24)
+
 
 
 </style>

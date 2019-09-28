@@ -48,11 +48,6 @@
   @import "../../common/stylus/mixin.styl"
   .footer_guide  //footer
     top-border-1px(#e4e4e4)
-    position fixed
-    z-index 100
-    left 0
-    right 0
-    bottom 0
     background-color #fff
     width 100%
     height rem(98)
@@ -67,11 +62,10 @@
       margin rem(5)
       color #999999
       &.on
-        color #02a774
+        color #b4282d
       span
         font-size rem(24)
-        margin-top rem(2)
-        margin-bottom rem(2)
+        margin-top rem(7)
         .iconfont
-          font-size rem(34)
+          font-size rem(40)
 </style>
