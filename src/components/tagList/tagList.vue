@@ -2,10 +2,9 @@
   <div class="tagList">
     <ListHeader :title="`品牌制造商直供`">
       <template>
-        <a href="" class="right" >
+        <a href="https://m.you.163.com/manufacturer/list" class="right" >
           <span class="more">更多</span>
           <i class="iconfont icon-youjiantou">
-            <a href=""></a>
           </i>
         </a>
       </template>
